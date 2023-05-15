@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/cac1ec65f4.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./hi.css">
+    <title>댕근마켓</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar__logo">
+                <a href="<c:url value='/' />">with DANG</a>
+            </div>
+            <ul class="navbar__menu">
+                <li><a href="main.html">댕댕여지도</a></li>
+                <li><a href="<c:url value='/danggeun/list' />">댕근마켓</a></li>
+                <li><a href="dangcare.html">댕댕케어</a></li>
+                <li><a href="<c:url value='/board/list' />">댕댕커뮤</a></li>
+                <li><a href="dangoffice.html">댕사무소</a></li>
+                <li><button class="btnLogin"><a href="<c:url value='${loginoutlink}' />">${loginout}</a></button></li>
+                <li><a href="mypage.html"><i class="fa fa-user-o" id="btnMypage" aria-hidden="true"></i></a></li>
+            </ul>
+            <a href="#" class="navbar__toggleBtn">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </a>
+        </nav>
+    </header>
+
+    <div class="board_wrap">
+        <div class="board_title">
+            <h2 class="dangguen-title">댕근마켓</h2>
+        </div>
+        <div class="board_write_wrap">
+            <form action="<c:url value='/danggeun/write' />" id="form" class="board_write" method="post">
+                <div class="title">
+                    <dl>
+                        <dd><input type="text" name="title" value="${danggeunDTO.title}" placeholder="제목 입력"></dd>
+                    </dl>
+                </div>
+                <section class="dangguen-sec">
+                    <div class="info">
+                    	<dl>
+                    		<dd><input type="text" name="name" value="${loginEmail}" hidden></dd>
+                    	</dl>
+                        <dl>
+                            <dd> <input type="text" id="price" name="price" value="${danggeunDTO.price}" placeholder="판매 가격" onkeyup="inputNumberFormat(this)" />
+                                원</dd>
+                        </dl>
+                        <div id="dangguen-img">
+
+				            <select class="form-select" aria-label="category" name="type_id">
+				                    <c:forEach var="DanggeunTypeDTO" items="${typeList}">
+				                    	<option value="${DanggeunTypeDTO.id}" ${danggeunDTO.type_id == DanggeunTypeDTO.id || danggeunDTO.type_id eq null ? "selected" : ""}>${DanggeunTypeDTO.name}</option>
+				                    </c:forEach>
+				            </select>
+                            <select class="form-select" name="addressRegion" id="addressRegion1"></select>
+                            <select class="form-select" name="addressDo" id="addressDo1"></select>
+                            <select class="form-select" name="addressSiGunGu" id="addressSiGunGu1"></select>
+
+                            <input id="imageinput" type="file" multiple="multiple" accept=".jpg, .jpeg, .png"
+                                onchange="previewImage(this)" required>
+                            <img id="preview" />
+
+                        </div>
+
+                    </div>
+                    <div class="cont">
+                        <textarea name="content" placeholder="내용 입력">${danggeunDTO.content}</textarea>
+                    </div>
+            	</section>
+            	<div class="bt_wrap">
+                	<button type="submit" id="writeBtn" class="on">등록</button>
+                	<a href="<c:url value='/danggeun/list?type_id=${type_id}' />">목록</a>
+            	</div>
+        	</form>
+    	</div>
+    </div>
