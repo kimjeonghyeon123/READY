@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #header {
+            width: 100%;
+            height: 15%;
+            background-color: skyblue;
+        }
+
+        #body {
+            width: 100%;
+            height: 85%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #chat {
+            width: 800px;
+            height: 500px;
+            display: flex;
+            border: 1px solid gray;
+        }
+
+        #chatrooms {
+            width: 50%;
+            height: 100%;
+            overflow-y: scroll;
+            scrollbar-width: none; /* Firefox에서 기본 스크롤바 감추기 */
+            -ms-overflow-style: none; /* IE/Edge에서 기본 스크롤바 감추기 */
+        }
+
+        #chatrooms::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera에서 기본 스크롤바 감추기 */
+        }
+
+        #chatting {
+            width: 50%;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-y: scroll;
+            scrollbar-width: none; /* Firefox에서 기본 스크롤바 감추기 */
+            -ms-overflow-style: none; /* IE/Edge에서 기본 스크롤바 감추기 */
+            border-left: 1px solid gray;
+        }
+
+        #chatting::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera에서 기본 스크롤바 감추기 */
+        }
+
+        .chatroom {
+            height: 100px; /* 적절한 높이 설정 */
+            border-bottom: 1px solid #ccc; /* 채팅방 간 구분선 설정 */
+        }
+
+        .chatroom:last-child {
+            border-bottom: none; /* 마지막 채팅방에는 구분선 제거 */
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    
+    <div id="body">
+        <div id="chat">
+            <div id="chatrooms">
+                <div class="chatroom">
+
+                </div>
+                <div class="chatroom">
+
+                </div>
+                <div class="chatroom">
+
+                </div>
+                <div class="chatroom">
+
+                </div>
+                <div class="chatroom">
+
+                </div>
+            </div>
+            <div id="chatting">
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+<!-- id="header"는 상단 15%정도만 차지하고 너비는 100%, 배경색은 하늘색으로 해줘 
+id="body"는 id="header"를 뺀 나머지를 차지하고 너비는 100% 배경색은 흰색으로 해줘 
+id="body" 안에 id="chat"이 정중앙에 와야 돼
+id="chatrooms"이랑 id="chatting"이 id="chat"을 이등분하게 해줘
+id="chatrooms"는 채팅방 목록을 보여줄건데 class="chatroom"을 5개까지 보여주고 
+채팅방이 더 있으면 이상은 스크롤을 내리게 하는데 스크롤은 안보이게해줘 -->
