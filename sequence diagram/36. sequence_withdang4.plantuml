@@ -1,0 +1,77 @@
+@startuml
+ !theme minty
+<style>
+root {
+    FontName 나눔고딕
+    FontSize 15
+    FontColor black
+}
+
+title {
+    FontSize 30
+    FontColor white
+}
+
+participant {
+    FontName 나눔고딕 ExtraBold
+    FontSize 20
+    FontColor white
+}
+
+group  {
+    BackgroundColor white
+    LineThickness 2
+    LineStyle 0
+    padding 50
+    margin 50
+}
+
+groupHeader {
+    FontSize 15
+    FontColor white
+    LineColor MediumAquaMarine
+}
+</style>
+
+participant User as U
+participant "Web" as W
+participant "DB" as D
+
+title 게시글 검색
+
+group 카테고리 검색
+activate U
+U -> W : 1. 카테고리 검색
+activate W
+W -> D : 2. 해당 카테고리의 게시글 조회
+activate D
+D --> W : 3. 해당 카테고리의 게시글 정보 제공
+deactivate D
+W --> U : 4. 카테고리 검색 결과 제공
+deactivate W
+end group
+
+group 지역 검색
+activate U
+U -> W : 5. 지역 검색
+activate W
+W -> D : 6. 해당 지역으로 조회
+activate D
+D --> W : 7. 해당 게시글 정보 제공
+deactivate D
+W --> U : 8. 게시글 검색 결과 제공
+deactivate W
+end group
+
+group 키워드 검색
+activate U
+U -> W : 9. 검색 종류(제목, 내용, 닉네임) 선택 및 검색 키워드 작성
+activate W
+W -> D : 10. 해당 검색 종류와 검색 키워드 조회
+activate D
+D --> W : 11. 해당 게시글 정보 제공
+deactivate D
+W --> U : 12. 게시글 검색 결과 제공
+deactivate W
+end group
+@enduml

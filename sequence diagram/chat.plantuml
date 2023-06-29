@@ -1,0 +1,98 @@
+@startuml
+ !theme minty
+<style>
+root {
+    FontName 나눔고딕
+    FontSize 15
+    FontColor black
+}
+
+title {
+    FontSize 30
+    FontColor white
+}
+
+participant {
+    FontName 나눔고딕 ExtraBold
+    FontSize 20
+    FontColor white
+}
+
+group  {
+    BackgroundColor white
+    LineThickness 2
+    LineStyle 0
+    padding 50
+    margin 50
+}
+
+groupHeader {
+    FontSize 15
+    FontColor white
+    LineColor MediumAquaMarine
+}
+</style>
+
+participant User as U
+participant "Web" as W
+participant "WebSocket" as WS
+participant "DB" as D
+
+title 게시글 작성 
+
+U -> W : 1. 채팅방 페이지 클릭
+activate U
+activate W
+W -> WS : 2. 웹소켓 동작 
+activate WS
+
+W -> D : 3. 채팅방 목록 요청
+activate D
+D --> W : 4. 채팅방 목록 제공
+deactivate D
+
+W --> U : 5. 채팅방 페이지 제공
+deactivate W
+
+group 채팅방 클릭
+U -\ W : 6. 채팅방 클릭
+activate W 
+W -> D : 7. 채팅방 목록 요청
+activate D
+D --> W : 8. 채팅방 목록 제공
+deactivate D
+W --\ U : 10. 채팅방 목록 제공
+W -> D : 11. 해당 채팅방 채팅 목록 요청
+activate D
+D --> W : 12. 해당 채팅방 채팅 목록 제공
+deactivate D
+W --\ U : 13. 해당 채팅방 채팅 목록 제공
+
+W -\ WS : 14. 상대방에게 채팅을 읽었다는 메시지 전송
+deactivate W
+
+group 채팅 전송
+U -\ W : 15. 채팅 전송 클릭
+activate W
+W -> D : 16. 채팅 저장
+activate D
+D --> W : 17. 채팅방, 채팅 목록 반환
+deactivate D
+W --\ U : 18. 채팅방, 채팅 목록 반환
+W -\ WS : 19. 웹소켓에 채팅을 보냈다는 메시지 전송
+deactivate W
+end group
+
+group 채팅방 나가기
+U -\ W : 20. 채팅방 나가기 클릭
+activate W
+W -> D : 21. 채팅방 정보 변경
+activate D
+D -> W : 22. 채팅방 목록 반환
+deactivate D
+W --\ U : 22. 채팅방 목록 제공
+deactivate W
+end group
+
+end group
+@enduml

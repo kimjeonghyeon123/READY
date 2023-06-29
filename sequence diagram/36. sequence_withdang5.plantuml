@@ -1,0 +1,85 @@
+@startuml
+ !theme minty
+<style>
+root {
+    FontName 나눔고딕
+    FontSize 15
+    FontColor black
+}
+
+title {
+    FontSize 30
+    FontColor white
+}
+
+participant {
+    FontName 나눔고딕 ExtraBold
+    FontSize 20
+    FontColor white
+}
+
+group  {
+    BackgroundColor white
+    LineThickness 2
+    LineStyle 0
+    padding 50
+    margin 50
+}
+
+groupHeader {
+    FontSize 15
+    FontColor white
+    LineColor MediumAquaMarine
+}
+</style>
+
+participant User as U
+participant "Web" as W
+participant "DB" as D
+
+title 게시글 조회
+
+group 조회
+activate U
+U -> W : 1. '댕댕커뮤' 메뉴 클릭
+activate W
+W -> W : 2. 로그인 여부 확인
+group 로그인
+W --> U : 3. 로그인 화면
+end group
+W -> D : 4. 전체 게시글 정보 조회
+activate D
+D --> W : 5. 전체 게시글 정보 제공
+deactivate D
+W --> U : 6. 게시글 목록 페이지 제공
+deactivate W
+U -> W : 7. 게시글 제목 클릭
+activate W
+W -> D : 8. 해당 게시글 정보 조회
+activate D
+D --> W : 9. 해당 게시글 정보 제공
+deactivate D
+W --> U : 10. 클릭한 게시글 화면 제공
+deactivate W
+end group
+
+group 찜
+U -/ W : 11. 찜 버튼 클릭
+activate W
+W -> W : 12. 찜 여부 확인
+
+group 찜한 게시물일 경우
+W -> D : 13. 찜 정보 삭제
+activate D
+deactivate D
+W --/ U : 14. 찜 버튼 색상 삭제
+end group
+
+group 찜하지 않은 게시물일 경우
+W -> D : 13. 찜 정보 추가
+activate D
+deactivate D
+W --\ U : 14. 찜 버튼 색상 채우기
+end group
+end group
+@enduml
