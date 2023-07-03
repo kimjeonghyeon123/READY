@@ -1,0 +1,306 @@
+- DDL
+  - DB를 구축하거나 수정할 목적으로 사용하는 언어
+
+1. 스키마
+  CREATE SCHEMA 스키마명 AUTHORIZATION 사용자_ID;
+    
+    예) 소유권자의 사용자 ID가 '홍길동'인 스키마 '대학교'를 정의
+        CREATE SCHEMA 대학교 AUTHORIZATION 홍길동;
+
+2. 도메인
+  CREATE DOMAIN 도메인명 [AS] 데이터_타입
+        [DEFAULT 기본값]
+        [CONSTRAINT 제약조건면 CHECK(범위값)];
+
+    예) '성별'을 '남' 또는 '여'와 같이 정해진 1개의 문자로 표현되는 도메인 SEX 정의
+        CREATE DOMAIN SEX CHAR(1)
+              DEFAULT '남'
+              CONSTRAINT VALID-SEX CHECK(VALUE IN ('남', '여'));
+
+4. TABLE
+  CREATE VIEW 뷰명(속성명, 속성명...)
+  AS SELECT문
+
+    예) <고객> 테이블에서 '주소'가 '안산시'인 고객들의 '성명'과 '전화번호'를 '안산고객'이라는 뷰로 정의
+      CREATE VIEW 안산고객(성명, 전화번호)
+      AS SELECT 성명, 전화번호
+      FROM 고객
+      WHERE 주소 = '안산시';
+
+5. INDEX
+  CREATE [UNIQUE] INDEX 인덱스명
+  ON 테이블명(속성명[ASC|DESC])
+  [CLUSTER];
+
+  클러스터드 인덱스 : 인덱스 키의 순서에 따라 데이터 정렬, 실제 데이터가 순서대로 저장되어 있음
+                    데이터 삽입 삭제 시 재정렬 필요
+
+    예) <고객> 테이블에서 UNIQUE한 특성을 갖는 '고객번호' 속성에 대해 내림차순으로 정렬하여 '고객번호_idx'로 인덱스 정의
+      CREATE UNIQUE INDEX 고객번호_idx
+      ON 고객(고객번호 DESC);
+
+6. ALTER TABLE
+  ALTER TABLE 테이블명 ADD 속성명
+  ALTER TABLE 테이블명 ALTER 속성명
+  ALTER TABLE 테이블명 DROP COLUMN 속성명 [CASCADE]
+
+7. DROP
+  DROP OO OO명 [CASCADE | RESTRICT]
+
+  CASCADE  : 참조하는 객체 제거
+  RESTRICT : 참조하는 객체가 있으면 제거 취소
+
+=============================
+연습문제
+=============================
+1)
+  ALTER TABLE 학생 ADD 주소 VARCHAR(20);
+  ALTER, ADD
+
+2) 
+  CREATE INDEX idx_name(name)
+  ON student(name);
+
+3)
+  CREATE TABLE patient(
+    id    CHAR(5),
+    name  CHAR(10),
+    sex   CHAR(1),
+    phone CHAR(20),
+    PRIMARY KEY(id),
+    CONSTRAINT sex_ck CHECK(VALUE IN('f', 'm')),
+    CONSTRAINT id_fk FOREIGN KEY(id) REFERENCES doctor(doc_id)
+  );
+
+4) 
+  CREATE TABLE Instructor(
+    id    CHAR(5) PRIMARY KEY,
+    name  CHAR(15) NOT NULL,
+    dept  CHAR(15),
+    FOREIGN KEY(dept) REFERENCES Department(dept) ON DELETE SET NULL ON UPDATE CASCADE
+  );
+
+5)
+  ALTER TABLE patient ADD job CHAR(20);
+
+6)
+  CREATE VIEW cc(ccid, ccname, instance)
+  AS SELECT Course.id, Course.name, Instructor.name
+  FROM Course, Instructor
+  WHERE Course.instructor = Instructor.id;
+
+7)
+  FOREIGN KEY REFERENCES ON DELETE CASCADE
+
+8)
+  CREATE UNIQUE INDEX Stud_idx(ssn)
+  ON Student(ssn);
+
+9)
+  CREATE DOMAIN 직위 VARCAHR2(10)
+  DEFAULT '사원'
+  CONSTRAINT VALID-직위 CHECK(VALUE IN('사원', '대리', '과장', '부장', '이사', '사장'));
+
+10)
+  CREATE INDEX 직원_name
+  ON 직원(이름);
+
+11) 
+  DROP TABLE 학생 CASCADE;
+
+12)
+  CREATE, ALTER, DROP
+
+13)
+  CHECK, IN
+
+=============================
+연습문제 끝
+=============================
+- DCL
+  - 데이터의 보안, 무결성, 회복, 병행 제어 등을 정의하는 데 사용하는 언어
+  - 데이터베이스 관리자가 데이터 관리를 목적으로 사용
+
+1. 
+  GRANT 사용자등급(DBA | RESOURCE | CONNECT) TO 사용자_ID_리스트 [IDENTIFIED BY 암호];
+  REVOKE 사용자등급(DBA | RESOURCE | CONNECT) FROM 사용자_ID_리스트;
+
+    예) 사용자 ID가 '나비'인 사람에게 데이터베이스 및 테이블 생성 권한 부여
+      GRANT RESOURCE TO '나비';
+
+    예) 사용자 ID가 'STAR'인 사람에게 데이터베이스 정보 검색 권한 부여
+      GRANT CONNECT TO 'STAR';
+
+  GRANT 권한_리스트(ALL | SELECT | INSERT | DELETE | UPDATE) ON 테이블명 TO 사용자 [WITH GRANT OPTION];
+  REVOKE [GRANT OPTION FOR] 권한_리스트 ON 테이블명 FROM 사용자 [CASCADE];
+
+    예) 사용자 ID가 'NABI'인 사람에게 고객 테이블에 대한 모든 권한과 다른 사람에게 권한을 부여할 수 있는 권한 부여
+      GRANT ALL ON 고객 TO NABI WITH GRANT OPTION;
+
+    예) 사용자 ID가 'STAR'인 사람에게 고객 테이블에 대한 권한 중 UPDATE 권한을 다른 사람에게 부여할 수 있는 권한만 취소
+      REVOKE GRANT OPTION FOR UPDATE ON 고객 FROM STAR;
+
+2. COMMIT
+  - 트랜잭션 처리가 정상적으로 완료된 후 트랜잭션이 수행한 내용을 데이터베이스에 반영하는 명령
+
+3. ROLLBACK
+  - 변경되었으나 아직 COMMIT되지 않은 모든 내용들을 취소하고 데이터베이스를 이전 상태로 되돌리는 명령어
+
+4. SAVEPOINT
+  - 트랜잭션 내에 ROLLBACK할 위치인 저장점을 지정하는 명령어
+
+  예)
+    COMMIT;
+    SAVEPOINT S1;
+    SAVEPOINT S2;
+    ROLLBACK TO S1;
+    ROLLBACK;
+
+=============================
+연습문제
+=============================
+1.
+  변경되었으나 아직 COMMIT 되지 않은 모든 내용을 취소하고 데이터베이스를 이전의 상태로 되돌린다.
+
+2. 
+  사용자에게 권한을 부여한다
+
+3. 
+  GRANT UPDATE ON STUDENT TO PARK;
+
+4.
+  GRANT ALL ON 학생 TO 김하늘;
+
+5. 
+  GRANT DELETE ON 강좌 TO 김하늘 WITH GRANT OPTION;
+
+6.
+  REVOKE SELECT, INSERT, DELETE ON 교수 FROM 임꺽정;
+
+7.
+  REVOKE UPDATE ON 수강 FROM 임꺽정 CASCADE;
+
+8.
+  commit : 트랜잭션 처리가 정상적으로 완료된 후 트랜잭션이 수행한 내용을 데이터베이스에 반영하는 명령
+  rollback : 변경되었으나 아직 commit되지 않은 모든 내용을 취소하고 데이터베이스를 이전 상태로 되돌림
+
+9.
+  ROLLBACK TO P1;
+
+=============================
+연습문제 끝
+=============================
+- DML(Data Manipulation Language)
+  - 저장된 데이터를 실질적으로 관리하는데 사용되는 언어
+
+    예) 
+      INSERT INTO 편집부원(이름, 생일, 주소, 기본급)
+      SELECT 이름, 생일, 주소, 기본급
+      FROM 사원
+      WHERE 부서='편집';
+
+  SELECT 이름, 기본급, 주소
+  FROM 사원
+  WHERE 기본급 < ALL(SELECT 기본급 FROM 사원 WHERE 주소 = '망원동');
+  
+  ALL : 서브쿼리문 안에 있는 모든 값보다 작은 걸 의미
+
+=============================
+연습문제
+=============================
+
+7.
+  SELECT 학생정보.학번, 이름, 결제여부
+  FROM 학생정보, 신청정보, 결제
+  WHERE 학생정보.학번 = 신청정보.학번 AND 신청정보.신청번호 = 결제.신청번호 AND 신청과목 = 'OpenGL';
+
+8.
+  1)
+    SELECT ID, NAME
+    FROM CUSTOMER;
+
+  2)
+    SELECT DISTINCT GRADE
+    FROM CUSTOMER;
+
+  3)
+    SELECT *
+    FROM CUSTOMER
+    ORDER BY ID DESC;
+
+  4)
+    SELECT NAME 
+    FROM CUSTOMER
+    WHERE AGE IS NULL;
+
+  5)
+    SELECT NAME
+    FROM CUSTOMER
+    WHERE AGE IS NOT NULL;
+
+9.
+  SELECT 사원명
+  FROM 사원
+  WHERE 연락번호 IS NOT NULL;
+
+10.
+  SELECT 이름
+  FROM 직원
+  WHERE 팀코드 = (SELECT 팀코드 FROM 직원 WHERE 이름 = '정도일');
+=============================
+연습문제 끝
+=============================
+
+- 그룹 함수
+  - COUNT, SUM, AVG, MAX, MIN, STDDEV(표준편차), VARIANCE(분산), ROLLUP, CUBE
+
+  ROW_NUMBER() : 윈도우별로 각 레코드에 대한 일련번호 반환
+  RANK() : 윈도우별로 순위를 반환, 공동 순위 반영
+  DENSE_RANK() : 윈도우별로 순위를 반환, 공동 순위 무시
+
+  예) 상여내역 별로 상여금에 대한 일련번호 구하기
+
+    SELECT 상여내역, 상여금, ROW_NUMBER() OVER (PARTITION BY 상여내역 ORDER BY 상여금 DESC) AS NO
+    FROM 상여금;
+
+  예) 상여내역 별로 상여금에 대한 순위 구하기
+
+    SELECT 상여내역, 상여금, RANK() OVER (PARTITION BY 상여내역 ORDER BY 상여금 DESC) AS 상여금순위
+    FROM 상여금;  
+
+  예) 부서별 상여금 평균
+
+    SELECT 부서, AVG(상여금) AS 평균
+    FROM 상여금
+    GROUP BY 부서;
+
+  예) 상여금이 100 이상인 사원이 2명 이상인 부서 수
+  
+    SELECT 부서, COUNT(*) AS 사원수
+    FROM 상여금
+    WHERE 상여금 >= 100
+    GROUP BY 부서
+    HAVING COUNT(*) >= 2;
+    
+  예) 부서, 상여내역, 상여금에 대해 부서별 상여내역별 소계와 전체 합계
+  
+    SELECT 부서, 상여내역, SUM(상여금) AS 상여금합계
+    FROM 상여금
+    GROUP BY ROLLUP(부서, 상여내역);
+
+    1단계 : 전체 합계
+    2단계 : 부서별 합계
+    3단계 : 부서별, 상여내역별 합계
+
+  예)
+  
+   
+=============================
+연습문제
+=============================
+
+
+
+
+
+
