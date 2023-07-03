@@ -1,4 +1,0 @@
-상단 목록에서 window -> web browser -> chrome
-
-FirstWeb 우클릭 후 Run as -> run on server 
-		maven -> update project
