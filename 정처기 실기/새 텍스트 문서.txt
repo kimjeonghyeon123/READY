@@ -197,3 +197,33 @@
   - VPN
   - NAC(Nectwork Access Control)
   - SIEM : 로그 보안 솔루션
+
+- PCB(Process Control Block)
+  - 프로세스 제어 블록, 프로세스 중요한 정보 저장
+
+- 스케줄링
+  - FIFO, SJF, HRN, RR, SRT
+
+- 프로토콜
+  - FTP : 파일 전송
+  - SMTP : 이메일 전송
+  - TELNET : 원격 조종, 가상 터미널
+  - ICMP : 제어 메시지 관리
+  - IGMP : 멀티캐스트
+  - ARP, RARP : IP 주소를 MAC주소로 변환
+
+- NAT : 한 개 정식 IP에 여러 개의 가상 사설 IP 연결
+- ISMS : 정보보호관리체계
+
+- 회복
+  - 즉각 갱신 기법
+  - 연기 갱신 기법
+  - 그림자 페이지 대체 기법
+  - 검사점 기법
+
+- 교착상태
+  - 상점비환
+  - 상호배제
+  - 점유와 대기
+  - 비선점
+  - 환형 대기
