@@ -1,0 +1,36 @@
+1. JSON (JavaScript Object Notation)
+  1) 자바스크립트 객체 문법으로 구조화된 객체 교환 형식입니다.
+  2) 여러 언어에서 데이터 교환형식으로 쓰이며 
+     객체문법말고도 단순 배열, 문자열도 표현 가능합니다.
+  3) 키, 값으로 구성되어 키를 입력하면 해당 값을 가져올 수 있습니다.
+
+  4) 직렬화, 역직렬화
+    - 직렬화
+      - 외부 시스템에서 사용할 수 있도록 바이트 형태로 
+        데이터를 변환하는 기술입니다. 
+      - String 형태로 만듦
+    - 역직렬화
+      - 내부 시스템에서 사용할 수 있도록 객체 형태로 
+        데이터를 변환하는 기술입니다.
+      - 객체형태로 만듦
+  5) 언어와 프레임워크에 독립적이기 때문에 
+     다른 시스템 간에 데이터를 교환하기 좋다
+
+  6) Java에서 사용
+    - 직렬화
+      JSONObject jsonObject = new JSONObject();
+      JSONArray jsonArray = new JSONArray();
+      for(int i = 1; i < 3; i++) {
+        JSONObject data = new JSONObject();
+
+        data.put("이름", "인간" + i);
+        data.put("나이", 10 + i);
+        jsonArray.add(data);
+      }
+      jsonObject.put("사람들", jsonArray);
+      jsonObject.toJSONString();
+      
+      @RequestBody
+        JSON 요청 -> HTTP 메시지 컨버터 -> 객체
+      @ResponseBody 
+        객체 -> HTTP 메시지 컨버터 -> JSON 응담
