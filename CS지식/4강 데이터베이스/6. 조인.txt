@@ -1,0 +1,6 @@
+1. 조인
+  1) 두 개 이상의 테이블을 묶어서 하나의 결과물을 만드는 것
+  2) 내부조인, 왼쪽조인, 오른쪽조인, 합집합 조인
+    - inner join : 교집합
+    - left(right) outer join
+    - full outer join : 합집합
